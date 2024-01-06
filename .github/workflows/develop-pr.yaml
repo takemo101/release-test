@@ -19,6 +19,6 @@ jobs:
           echo "title=$title"
           echo "branch=$branch"
       - name: Create pr
-        run: gh pr create -B develop -t ${{ steps.check.outputs.title }}  -T "pull_request_template.md"
+        run: gh pr create -B develop -t ${{ steps.check.outputs.title }}  -T pull_request_template.md
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
