@@ -16,6 +16,7 @@ jobs:
         id: check_pr
         run: |
           title=${{ (startsWith(github.ref, 'refs/heads/feature') && 'Feature') || 'Fix' }}
+          echo "$(gh pr list | wc -l)"
           echo "count=$(gh pr list -B develop | wc -l)"
           echo "title=${title}" >> $GITHUB_OUTPUT
       - name: Create pr
