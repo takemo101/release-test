@@ -18,6 +18,6 @@ jobs:
           title=${{ (startsWith(github.ref, 'refs/heads/feature') && 'Feature') || 'Fix' }}
           echo "title=${title}" >> $GITHUB_OUTPUT
       - name: Create pr
-        run: gh pr create -B develop -t ${{ steps.check_pr.outputs.title }} --body-file ./.github/pull_request_template.md
+        run: gh pr create -B develop --title ${{ steps.check_pr.outputs.title }} --body-file ./.github/pull_request_template.md
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
