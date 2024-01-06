@@ -1,0 +1,16 @@
+name: Create a pull request for release.
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create release pr
+        run: gh pr create -B "stage" -t "Develop" -b ""
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
