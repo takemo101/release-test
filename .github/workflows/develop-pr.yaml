@@ -6,19 +6,22 @@ on:
       - feature/**
       - fix/**
 
+# https://zenn.dev/kshida/articles/auto-generate-release-pr-with-github-actions
+
 jobs:
   create-develop-pr:
     runs-on: ubuntu-latest
-
+    env:
+      GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - name: Check if pr exists
-        id: check
+        id: check_pr
         run: |
           title=${{ (startsWith(github.ref, 'refs/heads/feature') && 'Feature') || 'Fix' }}
-          echo "title=$title"
-          echo "branch=$branch"
+          echo "count=$(gh pr list -B develop | wc -l)" >> $GITHUB_OUTPUT
+          echo "title=${title}" >> $GITHUB_OUTPUT
       - name: Create pr
-        run: gh pr create -B develop -t ${{ steps.check.outputs.title }}  -T "pull_request_template.md"
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        if: ${{ steps.check_pr.outputs.count == 0 }}
+        run: |
+          gh pr create -B develop --title ${{ steps.check_pr.outputs.title }} --body-file ./.github/pull_request_template.md
