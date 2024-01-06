@@ -1,0 +1,24 @@
+name: Create a pull request for develop.
+
+on:
+  push:
+    branches:
+      - feature/**
+      - fix/**
+
+jobs:
+  create-develop-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check if pr exists
+        id: check
+        run: |
+          title=${{ (startsWith(github.ref, 'refs/heads/feature') && 'Feature') || 'Fix' }}
+          echo "title=$title"
+          echo "branch=$branch"
+      - name: Create pr
+        run: gh pr create -B develop -t ${{ steps.check.outputs.title }}  -T "pull_request_template.md"
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
