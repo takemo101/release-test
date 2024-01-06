@@ -23,4 +23,6 @@ jobs:
           echo "title=${title}" >> $GITHUB_OUTPUT
       - name: Create pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
-        run: gh pr create -B develop --title ${{ steps.check_pr.outputs.title }} --body-file ./.github/pull_request_template.md
+        run: |
+          echo "${{ steps.check_pr.outputs.count == 0 }}"
+          gh pr create -B develop --title ${{ steps.check_pr.outputs.title }} --body-file ./.github/pull_request_template.md
