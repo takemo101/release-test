@@ -1,5 +1,8 @@
 name: Create a pull request for release.
 
+# https://zenn.dev/tatsugon/articles/github-actions-permission-error
+# https://qiita.com/qq8244353/items/407665f42e1cd666ab31
+
 on:
   push:
     branches: [develop]
@@ -13,4 +16,4 @@ jobs:
       - name: Create release pr
         run: gh pr create -B "main" -t "Develop" -b ""
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
