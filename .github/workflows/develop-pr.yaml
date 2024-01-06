@@ -21,8 +21,8 @@ jobs:
           title=${{ (startsWith(github.ref, 'refs/heads/feature') && 'Feature') || 'Fix' }}
           branch=$(echo ${{ github.ref }} | sed -e 's/refs\/heads\///g')
           echo "${branch}"
-          echo "$(gh pr list -B ${branch} | wc -l)"
-          echo "count=$(gh pr list -B ${branch} | wc -l)" >> $GITHUB_OUTPUT
+          echo "$(gh pr list --head ${branch} | wc -l)"
+          echo "count=$(gh pr list --head ${branch} | wc -l)" >> $GITHUB_OUTPUT
           echo "title=${title}" >> $GITHUB_OUTPUT
       - name: Create pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
