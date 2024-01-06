@@ -16,8 +16,10 @@ jobs:
         id: check_pr
         run: |
           title=${{ (startsWith(github.ref, 'refs/heads/feature') && 'Feature') || 'Fix' }}
+          echo "count=$(gh pr list -B develop | wc -l)"
           echo "title=${title}" >> $GITHUB_OUTPUT
       - name: Create pr
+        if: steps.check_pr.outputs.count == 0
         run: gh pr create -B develop --title ${{ steps.check_pr.outputs.title }} --body-file ./.github/pull_request_template.md
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
