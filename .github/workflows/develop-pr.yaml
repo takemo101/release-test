@@ -13,12 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check if pr exists
-        id: check
+        id: check_pr
         run: |
           title=${{ (startsWith(github.ref, 'refs/heads/feature') && 'Feature') || 'Fix' }}
-          echo "title=${title}"
-          echo "branch=${branch}"
+          echo "title=${title}" >> $GITHUB_OUTPUT
       - name: Create pr
-        run: gh pr create -B develop -t ${{ steps.check.outputs.title }}  -T 'pull_request_template.md'
+        run: gh pr create -B develop -t ${{ steps.check_pr.outputs.title }}  -T 'pull_request_template.md'
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
